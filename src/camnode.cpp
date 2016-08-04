@@ -1004,9 +1004,16 @@ int main(int argc, char** argv)
 		ros::Publisher pubInt64 = global.phNode->advertise<std_msgs::Int64>(ros::this_node::getName()+"/dt", 100);
 		global.ppubInt64 = &pubInt64;
 #endif
-    	
-		// Start the camerainfo manager.
+        
+        // Start the camerainfo manager.
 		global.pCameraInfoManager = new camera_info_manager::CameraInfoManager(ros::NodeHandle(ros::this_node::getName()), arv_device_get_string_feature_value (global.pDevice, "DeviceID"));
+
+        ros::NodeHandle pnh = ros::NodeHandle("~");
+        std::string camera_info_url;
+        if (pnh.getParam("camera_info_url",camera_info_url) && (camera_info_url != ""))
+        {
+            global.pCameraInfoManager->loadCameraInfo(camera_info_url);
+        }
 
 		// Start the dynamic_reconfigure server.
 		dynamic_reconfigure::Server<Config> 				reconfigureServer;
