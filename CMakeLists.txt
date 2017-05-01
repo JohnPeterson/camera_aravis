@@ -7,6 +7,8 @@ find_package(Aravis REQUIRED)
 find_package(GLIB2 REQUIRED)
 
 generate_dynamic_reconfigure_options(cfg/CameraAravisConfig.cfg)
+add_dependencies(camera_aravis_gencfg driver_base_generate_messages_cpp)
+
 catkin_package(
     DEPENDS Aravis GLIB2
     CATKIN_DEPENDS roscpp sensor_msgs image_transport camera_info_manager dynamic_reconfigure driver_base tf
